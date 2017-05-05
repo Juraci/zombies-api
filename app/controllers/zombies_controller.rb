@@ -6,4 +6,8 @@ class ZombiesController < ApplicationController
     end
     render json: zombies, status: :ok
   end
+
+  def show
+    render json: Zombie.find(params[:id]), status: :ok
+  end
 end

@@ -28,4 +28,16 @@ describe 'Zombies', type: :request do
       expect(zombies[:data].first[:attributes][:name]).to eq 'Ash'
     end
   end
+
+  context 'GET /zombies/:id' do
+    it 'returns the zombie by id' do
+      zombie = Zombie.create!(name: 'Ash', weapon: 'Axe')
+
+      get "/zombies/#{zombie.id}"
+
+      expect(response.status).to eq 200
+      zombie_parsed = JSON.parse(response.body, symbolize_names: true)
+      expect(zombie_parsed[:data][:attributes][:name]).to eq 'Ash'
+    end
+  end
 end
