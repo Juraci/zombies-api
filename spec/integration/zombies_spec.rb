@@ -12,6 +12,7 @@ describe 'Zombies', type: :request do
       get '/zombies'
 
       expect(response.status).to eq 200
+      expect(response.content_type).to eq 'application/vnd.api+json'
     end
   end
 
@@ -36,6 +37,7 @@ describe 'Zombies', type: :request do
       get "/zombies/#{zombie.id}"
 
       expect(response.status).to eq 200
+      expect(response.content_type).to eq 'application/vnd.api+json'
       zombie_parsed = JSON.parse(response.body, symbolize_names: true)
       expect(zombie_parsed[:data][:attributes][:name]).to eq 'Ash'
     end
