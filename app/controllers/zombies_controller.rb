@@ -10,4 +10,16 @@ class ZombiesController < ApplicationController
   def show
     render json: Zombie.find(params[:id]), status: :ok
   end
+
+  def create
+    zombie = Zombie.new(zombie_params)
+    zombie.save
+    render json: zombie, status: :created
+  end
+
+  private
+
+  def zombie_params
+    ActiveModelSerializers::Deserialization.jsonapi_parse(params)
+  end
 end
