@@ -83,7 +83,7 @@ describe 'Zombies', type: :request do
       end
     end
 
-    context 'PATCH /zombies' do
+    context 'PATCH /zombies/:id' do
       it 'updates a zombie' do
         updated_zombie = {
           data: {
@@ -101,6 +101,16 @@ describe 'Zombies', type: :request do
 
         expect(response.status).to eq 200
         expect(zombie.reload.weapon).to eq 'machinegun'
+      end
+    end
+
+    context 'DELETE /zombies/:id' do
+      it 'soft deletes a zombie' do
+        zombie = Zombie.create!(name: 'Ash', weapon: 'Axe')
+
+        delete("/zombies/#{zombie.id}")
+        expect(response.status).to eq 204
+        expect(zombie.reload.archive).to eq true
       end
     end
   end

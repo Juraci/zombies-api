@@ -1,6 +1,6 @@
 class ZombiesController < ApplicationController
   def index
-    zombies = Zombie.all
+    zombies = Zombie.all.where(archive: nil)
     if params[:weapon]
       zombies = zombies.where(weapon: params[:weapon])
     end
@@ -28,7 +28,19 @@ class ZombiesController < ApplicationController
     render json: zombie, status: :ok
   end
 
+  def destroy
+    zombie = Zombie.find_by!(id: params[:id], archive: nil)
+    zombie.update(archive: true)
+    zombie.save
+    head 204
+  end
+
   private
+
+  def archive
+    self.update(archive: true)
+    self.save
+  end
 
   def zombie_params
     ActiveModelSerializers::Deserialization.jsonapi_parse(params)
