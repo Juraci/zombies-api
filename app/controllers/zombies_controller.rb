@@ -21,6 +21,13 @@ class ZombiesController < ApplicationController
     end
   end
 
+  def update
+    zombie = Zombie.find(params[:id])
+
+    zombie.update(zombie_params)
+    render json: zombie, status: :ok
+  end
+
   private
 
   def zombie_params

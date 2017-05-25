@@ -82,5 +82,26 @@ describe 'Zombies', type: :request do
         expect(response.status).to eq 422
       end
     end
+
+    context 'PATCH /zombies' do
+      it 'updates a zombie' do
+        updated_zombie = {
+          data: {
+            type: 'zombies',
+            attributes: {
+              name: 'Ash',
+              weapon: 'machinegun'
+            }
+          }
+        }
+
+        zombie = Zombie.create!(name: 'Ash', weapon: 'Axe')
+
+        patch("/zombies/#{zombie.id}", params: updated_zombie, headers: headers, as: :json)
+
+        expect(response.status).to eq 200
+        expect(zombie.reload.weapon).to eq 'machinegun'
+      end
+    end
   end
 end
