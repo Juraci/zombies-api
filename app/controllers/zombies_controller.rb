@@ -13,8 +13,12 @@ class ZombiesController < ApplicationController
 
   def create
     zombie = Zombie.new(zombie_params)
-    zombie.save
-    render json: zombie, status: :created
+    
+    if zombie.save
+      render json: zombie, status: :created
+    else
+      render json: zombie.errors, status: :unprocessable_entity
+    end
   end
 
   private

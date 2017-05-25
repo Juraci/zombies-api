@@ -63,5 +63,24 @@ describe 'Zombies', type: :request do
       zombie_parsed = JSON.parse(response.body, symbolize_names: true)
       expect(zombie_parsed[:data][:attributes][:name]).to eq 'Johana'
     end
+
+    context 'when the name is not passed' do
+      it 'returns 422' do
+        new_zombie = {
+          data: {
+            type: 'zombies',
+            attributes: {
+              name: nil,
+              weapon: 'machinegun'
+            }
+          }
+        }
+
+        headers = { 'Content-Type' => 'application/vnd.api+json' }
+
+        post('/zombies', params: new_zombie, headers: headers, as: :json)
+        expect(response.status).to eq 422
+      end
+    end
   end
 end
